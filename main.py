@@ -41,5 +41,4 @@ while running:
 
 
 pygame.display.set_caption(f"Вы попали: {score} раз")
-
 pygame.quit()
