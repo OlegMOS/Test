@@ -43,5 +43,3 @@ while running:
 pygame.display.set_caption(f"Вы попали: {score} раз")
 time.sleep(5)
 pygame.quit()
-
-#Удаляем последний commit
