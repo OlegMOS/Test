@@ -1,45 +1,35 @@
-import time
-import pygame
-import random
+class TaskManager:
+    def __init__(self, task, time, result):
+        self.task = task
+        self.time = time
+        self.result = result
+        self.spisok = {'Задача: ': "Нет", 'Срок: ': "Нет", 'Выполнение: ': None}
 
-pygame.init()
+    def create_task(self):
+        self.spisok = {'Задача: ': self.task, 'Срок: ': self.time}
 
-screen_width = 800
-screen_height = 600
-screen = pygame.display.set_mode((screen_width, screen_height))
+    def set_result(self):
+        if self.result.lower() == "да":
+            self.spisok['Выполнение: '] = True
+        else:
+            self.spisok['Выполнение: '] = False
 
-pygame.display.set_caption("Игра Тир")
-icon = pygame.image.load("img/Яблоко.png")
-pygame.display.set_icon(icon)
+    def show_spisok(self):
+        print(self.spisok)
 
-target_img = pygame.image.load("img/Яблоко.png")
-target_width = 150
-target_height = 158
+# Создание экземпляра класса
+Task1 = TaskManager(
+    input("Введите содержание задачи: "),
+    input("Введите срок выполнения задачи: "),
+    input("Если задача закрыта, то введите Да (Нет - не выполнена): ")
+)
 
-score = 0
-
-target_x = random.randint(0, screen_width - target_width)
-target_y = random.randint(0, screen_height - target_height)
-
-color = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
-
-running = True
-while running:
-    screen.fill(color)
-
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
-        if event.type == pygame.MOUSEBUTTONDOWN:
-            mouse_x, mouse_y = pygame.mouse.get_pos()
-            if target_x < mouse_x < target_x + target_width and target_y < mouse_y < target_y + target_height:
-                score = score + 1
-                target_x = random.randint(0, screen_width - target_width)
-                target_y = random.randint(0, screen_height - target_height)
-    screen.blit(target_img, (target_x, target_y))
-    pygame.display.update()
+# Создание задачи и установка результата
+Task1.create_task()
+Task1.set_result()
+Task1.show_spisok()
 
 
-pygame.display.set_caption(f"Вы попали: {score} раз")
-time.sleep(5)
-pygame.quit()
+
+
+
