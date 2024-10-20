@@ -1,44 +1,80 @@
 class User:
-    def __init__(self,identificator,name,level):
-        self.__identificator = identificator
-        self.__name = name
-        self.__level = level
-        self.__user = []
+    def __init__(self, user_id, name):
+        self.__user_id = user_id  # Защищенный атрибут
+        self.__name = name         # Защищенный атрибут
+        self.__access_level = 'user'  # Уровень доступа по умолчанию
 
-    def __add(self,identificator,name,level):
-        self.__user.append(f"{identificator},{name},{level}")
+    # Метод для получения ID пользователя
+    def get_user_id(self):
+        return self.__user_id
 
-    def __delete_user(self,identificator):
-        del self.__user[identificator]
+    # Метод для получения имени пользователя
+    def get_name(self):
+        return self.__name
+
+    # Метод для получения уровня доступа
+    def get_access_level(self):
+        return self.__access_level
+
 
 class Admin(User):
-    def __init__(self, identificator, name, level,admin):
-        super(). __init__(identificator, name,level)
-        self.admin = admin
-    def get_add(self):
+    def __init__(self, user_id, name, admin_access_level):
+        super().__init__(user_id, name)
+        self.__access_level = 'admin'  # Уровень доступа для администратора
+        self.__admin_access_level = admin_access_level  # Дополнительный уровень доступа
 
-        identificator = input (f"Введите id пользователя: ")
-        name = input(f"Введите имя пользователя: ")
-        level = input(f"Введите права пользователя: ")
+    # Метод для добавления пользователя
+    def add_user(self, user_list, user):
+        #if isinstance(user, User):
+            user_list.append(user)
+            print(f"User {user.get_name()} added.")
+        #else:
+        #    print("Only User instances can be added.")
 
-        self.__add(identificator, name, level)
+    # Метод для удаления пользователя
+    def remove_user(self, user_list, user):
+        if user in user_list:
+            user_list.remove(user)
+            print(f"\nUser {user.get_name()} removed.")
+        else:
+            print("User not found in the list.")
 
-        print(f"Добавлены следующие пользователи {[self.__add]}")
+    # Метод для получения уровня доступа администратора
+    def get_admin_access_level(self):
+        return self.__admin_access_level
 
-    def set_del(self):
-        identificator = input(f"Введите id пользователя для удаления: ")
-        self.__delete_user(identificator)
 
-id_user = input(f"Введите свой ID: ")
+# Пример использования:
+user_list = []
 
-if id_user == "100":
-    Admin1 = Admin
-    choice = input(f"1 - Добавить пользователя, 2 - Удалить пользователя: ")
-    if choice == "1":
-        Admin.get_add()
-    if choice == "2":
-        Admin.set_del()
-    else:
-        choice = input(f"Выберите правильный номер действия: 1 - Добавить пользователя, 2 - Удалить пользователя: ")
+# Создаем обычных пользователей
+user1 = User(1, "Alice")
+user2 = User(2, "Bob")
+
+# Создаем администратора
+admin = Admin(3, "Charlie", "full")
+print("Администратор заведен под id = 3")
+
+
+# Администратор добавляет пользователей
+chek_admin = int(input(f"Для изменения данных пользователей введите id администратора: "))
+print("")
+
+if chek_admin == 3:
+    admin.add_user(user_list, user1)
+    admin.add_user(user_list, user2)
+
+    # Выводим список пользователей
+    print("Current users:")
+    for user in user_list:
+        print(f"ID: {user.get_user_id()}, Name: {user.get_name()}, Access Level: {user.get_access_level()}")
+
+    # Администратор удаляет пользователя
+    admin.remove_user(user_list, user1)
+
+    # Выводим список пользователей после удаления
+    print("Users after removal:")
+    for user in user_list:
+        print(f"ID: {user.get_user_id()}, Name: {user.get_name()}, Access Level: {user.get_access_level()}")
 else:
-    print("У вас нет прав на заведение и удаление пользователей")
+    print("Введенный id не принадлежит администратору")
