@@ -1,91 +1,81 @@
-#Разработай систему управления учетными записями пользователей для небольшой компании.
-# Компания разделяет сотрудников на обычных работников и администраторов.
-# У каждого сотрудника есть уникальный идентификатор (ID), имя и уровень доступа.
-# Администраторы, помимо обычных данных пользователей, имеют дополнительный уровень доступа
-# и могут добавлять или удалять пользователя из системы.
-#Требования:
-#1. Класс User*: Этот класс должен инкапсулировать данные о пользователе: ID, имя и уровень доступа ('user' для обычных сотрудников).
-#2. Класс Admin: Этот класс должен наследоваться от класса User. Добавь дополнительный атрибут уровня доступа,
-# специфичный для администраторов ('admin'). Класс должен также содержать методы add_user и remove_user,
-# которые позволяют добавлять и удалять пользователей из списка (представь, что это просто список экземпляров User).
-#3. Инкапсуляция данных: Убедись, что атрибуты классов защищены от прямого доступа и модификации снаружи.
-# Предоставь доступ к необходимым атрибутам через методы  public, _protected, __private и get и set методы.
+#__________________________________________________ ИГРА ТИР поймай яблоко______________________________________________
+import pygame #импортируем библиотеку pygame
+import random #импортируем библиотеку random
+pygame.init() #инициализируем pygame
 
-#______________________Создание класса User___________________________________________________________________________
+#__________________________________________________ ИГРОВОЕ ОКНО ______________________________________________________
+# создаем игровое окно
+SCREEN_WIDTH = 800 # задаем ширину окна Функция постоянная поэтому пишем всё заглавными буквами для себя, чтобы не забыть
+SCREEN_HEIGHT = 600 # задаем высоту окна
+screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT)) # создаём окно pygame с заданными параметрами ширины и высоты
 
-#('user' для обычных сотрудников, 'admin' для администраторов)
-class User: # Инкапсулируем данные о пользователе
-    def __init__(self, id, name): # Инициализируем данные о пользователе (id, name)
-        self.__id = id # id пользователя
-        self.__name = name # имя пользователя
-        self.__access_level = 'user' # уровень доступа пользователя
+pygame.display.set_caption("Игра - Поймай сбежавшее с дерева яблоко!           Кликай по яблоку, чтобы его поймать") # задаем заголовок окна
+icon = pygame.image.load("img/1001.jpg") # загружаем иконку из папки img pyCharm данного проекта
+pygame.display.set_icon(icon) # устанавливаем иконку в окно функции pygame
 
-    def get_id(self): # Возвращает идентификатор пользователя (id)
-        return self.__id
+#рисуем цель
+target_img = pygame.image.load("img/target.png") # загружаем иконку цели из папки img pyCharm
+target_width = 80 # ширина цели
+target_height = 80 # высота цели
 
-    def get_name(self): # Возвращает имя пользователя (name)
-        return self.__name
+target_x = random.randint(0, SCREEN_WIDTH - target_width) # генерируем координаты цели минус ширина цели
+target_y = random.randint(0, SCREEN_HEIGHT - target_height) # генерируем координаты цели минус высота цели
 
-    def get_access_level(self): # Возвращает уровень доступа пользователя (access_level)
-        return self.__access_level
+color = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255)) # генерируем цвет цели
 
-    def set_access_level(self, access_level): # Устанавливает уровень доступа пользователя (access_level)
-        self.__access_level = access_level
+# загружаем картинки деревьев, солнца и травы
+tree1_img = pygame.image.load("img/tree1.png") # загружаем иконку дерева из папки img pyCharm
+tree2_img = pygame.image.load("img/tree2.png") # загружаем иконку дерева из папки img pyCharm
+tree3_img = pygame.image.load("img/tree3.png") # загружаем иконку дерева из папки img pyCharm
 
-    def __str__(self): # Возвращает строковое представление объекта класса  и его атрибутов (id, name, access_level)
-        return f'ID: {self.get_id()}\nИмя: {self.get_name()}\nУровень доступа: {self.get_access_level()}'
+sun_img = pygame.image.load("img/Sun.png") # загружаем иконку cолнца из папки img pyCharm
 
-    def __repr__(self): # Возвращает строковое представление объекта класса и его атрибутов (id, name, access_level)
-        return f'User(id={self.get_id()}, имя={self.get_name()}, уровень доступа={self.get_access_level()})'
+trava1_img = pygame.image.load("img/trava1.png") # загружаем иконку травы из папки img pyCharm
+trava2_img = pygame.image.load("img/trava2.png") # загружаем иконку травы из папки img pyCharm
+trava3_img = pygame.image.load("img/trava3.png") # загружаем иконку травы из папки img pyCharm
 
-    def _protected_method(self): #
-        print('Это защищенный метод.') # Выводим сообщение об ошибке
+paple1_img = pygame.image.load("img/paple1.png") # загружаем иконку paple1 из папки img pyCharm
+paple2_img = pygame.image.load("img/paple2.png") # загружаем иконку paple2 из папки img pyCharm
+paple3_img = pygame.image.load("img/paple3.png") # загружаем иконку paple3 из папки img pyCharm
+paple4_img = pygame.image.load("img/paple4.png") # загружаем иконку paple4 из папки img pyCharm
+paple5_img = pygame.image.load("img/paple5.png") # загружаем иконку paple5 из папки img pyCharm
+paple6_img = pygame.image.load("img/paple6.png") # загружаем иконку paple6 из папки img pyCharm
 
-    def __private_method(self):
-        print('Это приватный метод.')
+#__________________________________________________ ИГРОВОЙ ЦИКЛ ______________________________________________________
+# создаём игровой цикл
+# создаем переменную running со значением истина
+running = True # когда игра начинается и если надо остановить, то false присвоим переменной
+while running: # цикл пока игра не закончится
+    screen.fill(color) # задаем цвет фона на основе переменной color, которая дает рандомный цвет
+    for event in pygame.event.get(): # создаём переменную событие, каждое событие содержит информацию о событии и будет сохранятся в переменной event
+        if event.type == pygame.QUIT: # если нажата кнопка закрытия
+            running = False # то игра закончится
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            mouse_x, mouse_y = pygame.mouse.get_pos() # получаем координаты мыши
+            if target_x < mouse_x < target_x + target_width and target_y < mouse_y < target_y + target_height: # если координаты цели больше координаты мыши# если координаты цели меньше координаты мыши
+                target_x = random.randint(0, SCREEN_WIDTH - target_width) # генерируем координаты новой цели минус ширина цели
+                target_y = random.randint(0, SCREEN_HEIGHT - target_height) # генерируем координаты новой цели минус высота цели
 
-#______________________Создание производного класса Admin от User ___________________________________________________________________________
+    # рисуем деревья на экране
+    screen.blit(tree1_img, (20, 20))  # рисуем дерево 1
+    screen.blit(tree2_img, (230, 250))  # рисуем дерево 2
+    screen.blit(tree3_img, (400, 50))  # рисуем дерево 3 без яблок
 
-class Admin(User): # Инкапсулируем данные о пользователе (id, name, access_level)
-    def __init__(self, id, name): # Инициализируем данные о пользователе (id, name)
-        super().__init__(id, name) # Инициализируем данные о пользователе (id, name)
-        self.__access_level = 'admin' # уровень доступа пользователя
+    screen.blit(sun_img, (680, 10)) # рисуем солнце
 
-    def add_user(self, user): # Добавляем пользователя в список пользователей
-        print(f'Добавляем пользователя {user.get_name()} с ID {user.get_id()} в систему.') # Выводим сообщение об успешном добавлении пользователя
+    screen.blit(trava1_img, (255, 430))  # рисуем траву 1
+    screen.blit(trava2_img, (0, 430)) # рисуем траву 2
+    screen.blit(trava3_img, (510, 430))  # рисуем траву 3
 
-    def remove_user(self, user): # Удаляем пользователя из списка пользователей
-        print(f'Удаляем пользователя {user.get_name()} с ID {user.get_id()} из системы.') # Выводим сообщение об успешном удалении пользователя
+    screen.blit(target_img, (target_x, target_y))  # рисуем цель
 
-    def __str__(self): # Возвращает строковое представление объекта класса  и его атрибутов (id, name, access_level)
-        return f'ID: {self.get_id()}\nИмя: {self.get_name()}\nУровень доступа: {self.get_access_level()}'
+    screen.blit(paple1_img, (481, 60)) # рисуем paple 1
+    screen.blit(paple2_img, (560, 70)) # рисуем paple 2
+    screen.blit(paple3_img, (620, 130)) # рисуем paple 3
+    screen.blit(paple4_img, (433, 131)) # рисуем paple 4
+    screen.blit(paple5_img, (400, 223)) # рисуем paple 5
+    screen.blit(paple6_img, (595, 228)) # рисуем paple 6
 
-    def __repr__(self): # Возвращает строковое представление объекта класса и его атрибутов (id, name, access_level)
-        return f'Admin(id={self.get_id()}, имя={self.get_name()}, уровень доступа={self.get_access_level()})'
+    pygame.display.update() # обновляем экран
 
-    def _protected_method(self): #Выводим сообщение об ошибке
-        print('Это защищенный метод.')
-
-    def __private_method(self): #Выводим сообщение об ошибке
-        print('Это приватный метод.')
-
-# Пример использования
-
-user = User('12345', 'Иван Петров') # Присваиваем данные о пользователе (id, name)
-admin = Admin('888', 'Лия Строгая') # Присваиваем данные о пользователе (id, name)
-admin2 = Admin('555', 'Павел Павлов') # Присваиваем данные о пользователе (id, name)
-print(user) # Выводим данные о user
-print(' ')
-print(admin) # Выводим данные о admin
-print(' ')
-
-print('Устанавливаем уровень доступа пользователя:')
-admin.set_access_level('admin') # Устанавливаем уровень доступа пользователя (access_level)
-print(admin)
-print(' ')
-
-admin.add_user(admin2) # Добавляем пользователя в список
-print(admin2)
-print(' ')
-
-admin.remove_user(user) # Удаляем пользователя из списка пользователей
+pygame.quit() #закрываем окно с игрой pygame и выходим из программы когда running = False
